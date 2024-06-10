@@ -353,38 +353,27 @@ Converter (ADC) Board</h3>
 </div>
 
 <h1 id="challenges">Challenges</h1>
-<p>The most significant challenge we faced while developing this
-prototype was of inaccurate and inconsistent Electrical Conductivity
-(EC) measurements. This occurred due to two reasons: probe channel
-polarization and current limitations of GPIO pins.</p>
-<h2 id="probe-channel-polarization">Probe Channel Polarization</h2>
-<p>Our first design for the probe was simply two copper rods, which
-would add as electrodes. This probe would be connected in series with a
-1000-ohm resistor to act as a voltage divider. We would simply connect
-the probe to VCC and measure the voltage divider through the ADC,
-allowing us to calculate the EC. However, when we used the probe for a
-few minutes, we realized that the EC value would continue to rise. This
-is because the DC current causes an ionized channel to build up between
-the two electrodes in the water. This cause inconsistent EC readings as
-time goes on.</p>
-<h2 id="current-limitation-of-gpio-pins">Current Limitation of GPIO
-Pins</h2>
-<p>Our next idea was to try using the GPIO pins to power the probe,
-since we can turn it off when not needed, preventing excessive
-polarization. However, the GPIO pins are current limited, and any
-control circuit with a transistor would introduce extra voltage drops.
-Therefore, the simple two-probe implementation was not feasible.</p>
-<h2 id="solution-to-challenges">Solution to Challenges</h2>
-<p>We realized that using DC current to measure EC was not feasible.
-Therefore, we purchased a standalone EC measurement board from CQRobot.
-This inexpensive solution ($8) used a low-voltage, low-current AC signal
-to prevent polarization. The board would convert the AC voltage drop
-across the solution to a DC analog voltage, which would then be read by
-our ADC. After calibrating the setup using a commercial TDS pen, the
-results were accurate within 3%, and would not drift by more than 0.5%
-over time.</p>
+<p>The most two significant challenges faced during the project development
+  was (1) UART Buffer Size and (2) Board-to-Board Communication. These two
+  problems are related to using UART with the microcontrollers.</p>
+<h2 id="probe-channel-polarization">UART Buffer Size</h2>
+<p>The first problem we encountered was the size of the buffer of UARTA1. The core of our game logic relied on using a 2D array to digitally represent the state of the game. The rationale behind this design choice was that when a user attacks a position on the board, a 2D array provides an easy and fast way to check if the attack is a successful hit or not (taking O(1) time). This feature worked seamlessly with the rest of our logic, but since we couldn't send a 2D array over UART, our TA instructed us to use an algorithm to convert the 2D array into a string. Despite doing this, UART couldn't transmit every element in the string. Out of the 36 elements in the string, UART was only successfully sending 15 elements. After troubleshooting this problem, we discovered that UARTA1 had a buffer size of 15 characters. Thus, we decided that instead of sending the entire array, we would send the coordinates or single characters when necessary.</p>
+<h2 id="current-limitation-of-gpio-pins">Board-to-Board Communication</h2>
+<p>The main issue encountered was implementing board to board communication to
+ enforce a turn-based system for the game. The initial plan was to implement
+ this feature by using UART to connect the transmitter pin of the first
+ microcontroller to the receiver pin of the second microcontroller, and vice
+ versa. However, when doing this, we faced significant noise and random
+ characters transmitted over the lines, which disrupted communication and 
+ resulted in incorrect messages being sent over. Unfortunately, this issue
+ wasn't identified until later in this project, when tested the code with two
+ microcontrollers. Since this testing wasn't done until later in the timeline
+ we weren't able to resolve this issue in time for checkoff. As a workaround,
+ we modified the project so that messages were sent to a single
+ microcontroller, requiring players to exchange microcontrollers after placing
+ their ship positions.</p>
 <h1 id="future-work">Future Work</h1>
-<p>f there had been more time, we would have implemented these three additional
+<p>If there had been more time, we would have implemented these three additional
   features: (1) completing the two-board communication, (2)
   incorporating audio cues, and (3) enabling user input via an analog stick.
   Completing the two-board communication feature would enforce a turn-based
