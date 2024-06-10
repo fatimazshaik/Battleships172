@@ -23,21 +23,21 @@
 <div class="abstract">
 
 <div class="abstract-title"><h2>Description</h2></div>
-"Battleships!" is an interactive 
-Hydroponics is a technique where plants are grown in a nutrient-rich
-solution. This soil- free technique has been gaining traction recently
-due to its ability to optimize resource utilization. However, since
-plants are highly sensitive to changes in TDS, hydroponic setups require
-continuous TDS monitoring and adjustment. NutriSense, our device, allows
-hobbyists to achieve ideal hydroponics results on a small scale. It
-continuously monitors TDS and temperature, allowing the user to remotely
-read the status over AWS IoT cloud. The user can remotely enter upper
-and lower thresholds for TDS, and the device will automatically add
-nutrient solution or water to keep the TDS bounded by the thresholds.
-The device can also be configured to send notifications over SNS when
-the TDS value goes outside thresholds. <br/><br/> Our source code can be
+“Battleships!” is a the name of the project implemented for our EEC 172 final
+project. This product is a recreation of the classic board game “Battleships”
+on the CC3200 microcontroller. This game is a two player game where each 
+player inputs their name on the micorntorller using a TV remote and then 
+places their ships on a 6x6 board in a way that the other player can't see 
+the opponents ship placement. Players will place small ships and medium sized ships. The medium ships will be rotatable. Afterwards, the players swaps boards 
+and use the remote to try to attack the opponent's ship by selecting certain 
+positions in the 6x6 board. When the player completed shooting the all the 
+oppponents ships, the game is ober and the a message is sent over to AWS noting 
+that that player won. For this project, the  game progress was displayed on an 
+Adafruit OLED screen. Players could select ship positions using an AT&T Remote 
+and a button on the board to rotate the ships. The game information was 
+communicated via UART, and the winner information was sent to AWS.<br/><br/> Our source code can be
 found <!-- replace this link -->
-<a href="https://github.com/ucd-eec172/project-website-example"> here
+<a href="https://github.com/fatimazshaik/Battleships172SourceCode"> here
 (placeholder)</a>.<br />
 
 <div style="display:flex;flex-wrap:wrap;justify-content:space-evenly;padding-top:20px"> <div style="display: inline-block; vertical-align: bottom;"> <img src="./media/Image_001.jpg" style="width:auto;height:2in"/> <!-- <span class="caption"> </span> --> </div> <div style="display: inline-block; vertical-align: bottom;"> <img src="./media/Image_002.jpg" style="width:auto;height:2in" /> <!-- <span class="caption"> </span> --> </div> </div>
