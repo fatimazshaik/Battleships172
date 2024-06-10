@@ -141,23 +141,13 @@ suited for individuals of all age groups.</p>
 <h2 id="system-architecture">System Architecture</h2>
 <div style="display:flex;flex-wrap:wrap;justify-content:space-evenly;">
   <div style="display:inline-block;vertical-align:top;flex:1 0 400px;">
-    As shown in the system's diagram a player will be 
-    As shown in the system flowchart, we use one of the CC3200 boards for
-    the closed feedback loop for maintaining concentration in the
-    environment. The board will read values with I2C protocol through an ADC
-    which reads values from the thermistor and the TDS meter sensor. The
-    board will also periodically read user-defined thresholds from the AWS
-    cloud using RESTful APIs. When the sensory values read outside of the
-    user-defined thresholds, the board will activate the motor control
-    function to pump either water or nutrient solution to bring the
-    concentration back within the thresholds. Meanwhile, another CC3200
-    board is frequently reading from the AWS cloud to present the current
-    TDS reading and user-defined threshold to the user on an OLED through
-    SPI protocols. To adjust the thresholds, the user can either do it
-    remotely or locally by using a TV remote to type the number into the IR
-    receiver. The adjustments will be updated to the AWS and if the user
-    updates remotely, the local CC3200 board will update the values in the
-    next synchronization.
+    <!-- As shown in the system's diagram a player will be  -->
+    The ship's position is chosen using user input from the
+    remote while the oritentation is picked using buttons on the    microcontroller. The position is decoded and checked to ensure
+    no overlapping ships are placed. Concurrently, the board is
+    being projected onto the OLED screen. At the end, the winner
+    is sent to player's email by AWS. Figure 4 depicts the system
+    architecture.
   </div>
   <div style="display:inline-block;vertical-align:top;flex:0 0 400px;">
     <div class="fig">
@@ -170,20 +160,15 @@ suited for individuals of all age groups.</p>
 <h2 id="functional-specification">Functional Specification</h2>
 <div style="display:flex;flex-wrap:wrap;justify-content:space-evenly;">
   <div style="display:inline-block;vertical-align:top;flex:1 0 300px;">
-    Our system works based on the following state diagram. The device will
-    periodically monitor the temperature and the electrical conductivity
-    (EC) of the solution and convert the values into a TDS value using a
-    calibration curve. At the same time, the device will check for threshold
-    inputs, both over the AWS shadow and via manual input on the IR
-    receiver. It will compare the TDS with the lower and upper thresholds
-    set by the user. If the value is within the thresholds, it will stay in
-    the rest state. If the TDS is higher than the upper thresholds, it will
-    go to the water state and activate the water pump until the PPM is lower
-    than the upper thresholds and go back to the rest state. If the PPM is
-    lower than the lower thresholds, it will go to the nutrient state and
-    activate the nutrient pump until the PPM is higher than the lower
-    thresholds and go back to the rest state. In each state, the device will
-    periodically post the TDS.
+    The player is first presented with the start screen. They are
+    asked to input their name. Next, they are presented with an
+    empty board and some ships, where they can choose where to
+    position their ships by using the remote and the buttons on the
+    microcontroller. Next, the coordinates of their ship positions
+    are stored in a 2D array and in a string (in order to be sent over
+    UART). The player then passes the board off to another player,
+    where they have the opportunity to attack the first player’s
+    board until they find all the ships. 
   </div>
   <div style="display:inline-block;vertical-align:top;flex:0 0 500px">
     <div class="fig">
@@ -210,7 +195,7 @@ able to recieve user input. Meanwhile the OLED and AWS worked togetehr to provid
     At the end of the game, when the endgame screen is reached,
     the player that won is sent to AWS using their Internet of
     Things device/shadow feature. Specifically, the SNS feature
-    and the http post function was used. We created an SNS
+    and the http_post() function was used. We created an SNS
     topic and a subscription with an EMAIL protocol. Next, we
     created a new rule that attached an action when the rule was
     triggered. Finally, we simply called the http post function with
@@ -227,11 +212,11 @@ able to recieve user input. Meanwhile the OLED and AWS worked togetehr to provid
 <h3 id="oled-display">OLED Display</h3>
 <div style="display:flex;flex-wrap:wrap;justify-content:space-between;">
   <div style='display: inline-block; vertical-align: top;flex:1 0 400px'>
-    Everything was projected onto the OLED screen, including
-    a start screen, the player's board, an attack board and an 
-    endgame screen. Depending on the state of the game, 
-    the OLED will display a different screen. The OLED allows for 
-    a visual cue for the user to udnerstand what is going on in the game.
+    Everything was projected onto the OLED screen, including a start screen, 
+    the player's board, an attack board, and an endgame screen. Depending on 
+    the state of the game, the OLED will display a different screen. The OLED 
+    provides a visual cue for the user to understand what is happening in the 
+    game.
   </div>
   <div style='display: inline-block; vertical-align: top;flex:0 0 400px'>
     <div class="fig">
